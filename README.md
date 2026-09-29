@@ -27,7 +27,7 @@ docker compose up -d
 ```
 Bu komut, hedef olarak kullanılacak zafiyetli uygulamaları başlatır:
 - OWASP Juice Shop → http://localhost:3000
-- DVWA → http://localhost:8081
+- DVWA → http://localhost:8080
 
 ### 2. Backend'i çalıştır
 ```bash
