@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///C:/Program Files (x86)/Nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.991 scan initiated Fri Oct 16 23:26:34 2026 as: nmap -sV -sC -&#45;script vuln -T4 -v -p 3000,8081 -oX ciktimiz.xml 127.0.0.1 -->
+<nmaprun scanner="nmap" args="nmap -sV -sC -&#45;script vuln -T4 -v -p 3000,8081 -oX ciktimiz.xml 127.0.0.1" start="1792182394" startstr="Fri Oct 16 23:26:34 2026" version="7.991" xmloutputversion="1.05">
+<scaninfo type="syn" protocol="tcp" numservices="2" services="3000,8081"/>
+<verbose level="1"/>
+<debugging level="0"/>
+<taskbegin task="NSE" time="1792182394"/>

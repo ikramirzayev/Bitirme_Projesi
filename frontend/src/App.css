@@ -1,59 +1,471 @@
-.app-shell {
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 3rem 1.5rem;
-  font-family: system-ui, sans-serif;
-  color: #1a1a1a;
+* {
+  box-sizing: border-box;
 }
 
-h1 {
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: #0b1b2b;
+}
+
+.app-shell {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+  color: #d9e4ec;
+}
+
+.app-header h1 {
   font-size: 1.6rem;
-  margin-bottom: 0.4rem;
-  color: #0F2A47;
+  color: #ffffff;
+  margin-bottom: 0.3rem;
 }
 
 .subtitle {
-  color: #555;
-  margin-bottom: 2rem;
+  color: #9fb4c6;
+  font-size: 0.9rem;
+  margin-top: 0;
 }
 
-.scan-box {
+.scan-controls {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.6rem;
+  margin: 1.5rem 0;
 }
 
-.scan-box input {
+.scan-controls input {
   flex: 1;
   padding: 0.6rem 0.8rem;
-  border: 1px solid #ccc;
   border-radius: 6px;
+  border: 1px solid #2a3f54;
+  background: #112437;
+  color: #e5edf2;
   font-size: 0.95rem;
 }
 
-.scan-box button {
-  padding: 0.6rem 1.2rem;
-  background-color: #1E6F9F;
-  color: white;
+.scan-controls button {
+  padding: 0.6rem 1.4rem;
+  border-radius: 6px;
   border: none;
-  border-radius: 6px;
+  background: #1e7a4a;
+  color: #ffffff;
+  font-weight: 700;
   cursor: pointer;
-  font-size: 0.95rem;
+  transition: background 0.2s;
 }
 
-.scan-box button:hover {
-  background-color: #0F2A47;
+.scan-controls button:disabled {
+  background: #3a4d5c;
+  cursor: not-allowed;
+}
+
+.scan-controls button:not(:disabled):hover {
+  background: #23935a;
+}
+
+/* --- Radar / Progress --- */
+
+.scan-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2rem 0;
+  gap: 1rem;
+}
+
+.radar-wrapper {
+  position: relative;
+  width: 160px;
+  height: 160px;
+}
+
+.radar-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(46, 204, 113, 0.35);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.radar-ring-outer { width: 160px; height: 160px; }
+.radar-ring-mid { width: 106px; height: 106px; }
+.radar-ring-inner { width: 53px; height: 53px; }
+
+.radar-sweep {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: conic-gradient(
+    rgba(46, 204, 113, 0.65),
+    rgba(46, 204, 113, 0) 35%
+  );
+  animation: radar-spin 2s linear infinite;
+}
+
+.radar-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  margin: -4px;
+  border-radius: 50%;
+  background: #2ecc71;
+  box-shadow: 0 0 12px 4px rgba(46, 204, 113, 0.7);
+  animation: radar-pulse 2s ease-in-out infinite;
+}
+
+@keyframes radar-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes radar-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+
+.progress-bar-track {
+  width: 100%;
+  max-width: 420px;
+  height: 10px;
+  background: #112437;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #2a3f54;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: #2ecc71;
+  transition: width 0.4s ease;
+}
+
+.progress-percent {
+  margin: 0;
+  font-weight: 700;
+  color: #2ecc71;
+}
+
+.module-progress-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 420px;
+  font-size: 0.85rem;
+  color: #9fb4c6;
+}
+
+.module-progress-list li {
+  padding: 0.25rem 0;
+}
+
+.module-progress-list li.done {
+  color: #2ecc71;
+}
+
+/* --- Results --- */
+
+.results {
+  margin-top: 1.5rem;
+}
+
+.result-section {
+  background: #0f2236;
+  border: 1px solid #1c3650;
+  border-radius: 10px;
+  padding: 1.2rem 1.4rem;
+  margin-bottom: 1.2rem;
+}
+
+.result-section h2 {
+  margin-top: 0;
+  font-size: 1.15rem;
+  color: #ffffff;
+}
+
+.sub-section {
+  margin-top: 1rem;
+}
+
+.sub-section h3 {
+  font-size: 0.95rem;
+  color: #cddbe6;
+  margin-bottom: 0.4rem;
+}
+
+.host-card {
+  width: 100%;
+  border-collapse: collapse;
+  background: #EEF4F8;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.host-card th {
+  background: #0F2A47;
+  color: #ffffff;
+  padding: 0.5rem 0.8rem;
+  text-align: left;
+  font-size: 0.85rem;
+}
+
+.host-card td {
+  color: #0F2A47;
+  padding: 0.45rem 0.8rem;
+  border-top: 1px solid #d4dee6;
+  font-size: 0.85rem;
+}
+
+.subdomain-list, .tech-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.subdomain-list li, .tech-list li {
+  padding: 0.3rem 0;
+  border-bottom: 1px solid #1c3650;
+  font-size: 0.88rem;
+  color: #d9e4ec;
+}
+
+.detail-btn {
+  margin-top: 0.6rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 6px;
+  border: 1px solid #2a3f54;
+  background: #112437;
+  color: #cddbe6;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.detail-btn:hover {
+  background: #1a3146;
+}
+
+.note {
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+  color: #8fa6b8;
+  font-style: italic;
+}
+
+.muted {
+  color: #8fa6b8;
+  font-size: 0.88rem;
+}
+
+.debug-dump {
+  background: #081220;
+  color: #7fa6c2;
+  font-size: 0.75rem;
+  padding: 0.8rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin-top: 0.6rem;
 }
 
 .status {
-  margin-top: 1.5rem;
-  padding: 0.8rem;
-  background: #EEF4F8;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+  color: #cddbe6;
+}
+
+.status.error {
+  color: #ff8a8a;
+}
+
+.finding-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* --- AI Analizi tetikleme butonu --- */
+
+.analyze-trigger {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+
+.analyze-trigger button {
+  padding: 0.7rem 1.6rem;
   border-radius: 6px;
+  border: none;
+  background: #2a6ebb;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.analyze-trigger button:disabled {
+  background: #3a4d5c;
+  cursor: not-allowed;
+}
+
+.analyze-trigger button:not(:disabled):hover {
+  background: #3580d6;
+}
+
+/* --- AI Analizi / Nuclei bulgu kartlari --- */
+
+.risk-badge {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 0.8rem;
+  letter-spacing: 0.03em;
+}
+
+.ai-summary {
+  color: #e5edf2;
+  line-height: 1.6;
+  margin-bottom: 1.2rem;
+  font-size: 0.92rem;
+}
+
+.finding-card {
+  background: #EEF4F8;
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 0.8rem;
+  border-left: 4px solid #999;
+}
+
+.finding-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.finding-title {
+  font-weight: 700;
+  color: #0F2A47;
+  font-size: 0.95rem;
+}
+
+.risk-pill {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.15rem 0.6rem;
+  border-radius: 12px;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.finding-text {
+  color: #2a3f54;
+  font-size: 0.88rem;
+  margin: 0.3rem 0;
+  line-height: 1.5;
+}
+
+.finding-why {
+  background: #fff8e6;
+  border-radius: 6px;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.85rem;
+  color: #5c4a00;
+  margin: 0.5rem 0;
+}
+
+.finding-action {
+  font-size: 0.85rem;
+  color: #0F2A47;
+  margin: 0.3rem 0 0;
+}
+
+/* Rozet/pill renkleri (koyu arkaplan + beyaz yazi) */
+.risk-kritik { background: #7a1f1f; color: #ffffff; }
+.risk-yuksek { background: #b4541a; color: #ffffff; }
+.risk-orta   { background: #a88a1a; color: #ffffff; }
+.risk-dusuk  { background: #1e7a4a; color: #ffffff; }
+.risk-bilinmiyor { background: #555; color: #ffffff; }
+
+/* Kart sol kenarlik renkleri (kartin kendi acik arkaplani hep ayni kalir) */
+.card-kritik { border-left-color: #7a1f1f; }
+.card-yuksek { border-left-color: #b4541a; }
+.card-orta   { border-left-color: #a88a1a; }
+.card-dusuk  { border-left-color: #1e7a4a; }
+.card-bilinmiyor { border-left-color: #999; }
+
+/* --- Agent Karar Sureci (Hafta 10) --- */
+
+.agent-steps-section {
+  background: #0c1d2d;
+  border: 1px solid #1c3650;
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.agent-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+
+.agent-step-card {
+  background: #112437;
+  border: 1px solid #2a3f54;
+  border-left: 4px solid #2a6ebb;
+  border-radius: 8px;
+  padding: 0.7rem 0.9rem;
+}
+
+.agent-step-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+
+.agent-step-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.15rem 0.6rem;
+  border-radius: 12px;
+  background: #2a6ebb;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.agent-step-tool {
+  font-weight: 700;
+  color: #ffffff;
   font-size: 0.9rem;
 }
 
-footer {
-  margin-top: 3rem;
+.agent-step-neden {
+  background: #fff8e6;
+  border-radius: 6px;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.85rem;
+  color: #5c4a00;
+  margin: 0.4rem 0;
+}
+
+.agent-step-result {
+  font-size: 0.85rem;
+  color: #d9e4ec;
+  margin: 0.2rem 0 0;
+}
+
+.app-footer {
+  margin-top: 2.5rem;
+  text-align: center;
   font-size: 0.8rem;
-  color: #999;
+  color: #6c8295;
 }

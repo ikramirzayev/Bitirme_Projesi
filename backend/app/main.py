@@ -1,47 +1,28 @@
-"""
-AI Destekli Otonom Pentest Ajanı - Backend API
-------------------------------------------------
-Bu dosya, projenin ilk hafta hedefine uygun minimal bir iskelettir:
-- FastAPI uygulamasının ayağa kalktığını doğrulayan bir health-check endpoint'i
-- İleride keşif araçlarını (Nmap, Sublist3r vb.) tetikleyecek bir taslak endpoint
-
-Her yeni özellik eklerken bu dosyayı büyütmek yerine ayrı modüllere
-(örn. app/scanners/, app/agent/, app/routers/) bölmen önerilir.
-"""
-
 from fastapi import FastAPI
-from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
+from app.core.config import ALLOWED_ORIGINS, APP_TITLE, APP_VERSION
+from app.routers import health, scan , analyze
+from app.db.database import Base, engine
+from app.db import models
 
+Base.metadata.create_all(bind=engine)
 app = FastAPI(
-    title="AI Destekli Otonom Pentest Ajanı",
+    title=APP_TITLE,
     description="Hedef sistemlerde otomatik keşif yapan ve bulguları AI ile "
-                 "yorumlayan pentest asistanı API'si.",
-    version="0.1.0",
+                 "yorumlayan pentest asistanı API.",
+    version=APP_VERSION,
 )
 
+# Frontend (Vite, localhost:5173) backend'e istek atabilsin diye
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ALLOWED_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-class ScanRequest(BaseModel):
-    target: str  # Örn: "http://localhost:3000" (yalnızca izole test ortamı!)
-
-
-@app.get("/health")
-def health_check():
-    """Servisin ayakta olup olmadığını kontrol etmek için basit bir uç nokta."""
-    return {"status": "ok", "message": "Backend calisiyor"}
-
-
-@app.post("/scan")
-def start_scan(request: ScanRequest):
-    """
-    Taslak endpoint: ileride burada
-    1) Nmap/Sublist3r/WhatWeb/Nuclei sırayla çalıştırılacak,
-    2) Sonuçlar JSON formatında birleştirilecek,
-    3) LLM'e gönderilip yorumlanacak.
-
-    Şimdilik sadece isteği doğrulayıp sabit bir yanıt döndürür.
-    """
-    return {
-        "target": request.target,
-        "status": "queued",
-        "note": "Tarama motoru henuz baglanmadi - bu bir yer tutucu yanittir.",
-    }
+# Uç noktaları (endpoints) ekle
+app.include_router(health.router)
+app.include_router(scan.router)
+app.include_router(analyze.router)
